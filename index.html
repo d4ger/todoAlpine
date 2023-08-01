@@ -8,27 +8,29 @@
     <style>.completed{text-decoration: line-through;}</style>
     <title>Todo App</title>
 </head>
-<body>
-    <div x-data="{todos: [], userInput: ''}">
-        <form x-on:submit.prevent>
-            <input x-model="userInput" placeholder="Enter todo item" type="text">
-            <button x-on:click="if(userInput.trim().length) 
-            todos.push({name: userInput, completed: false}); userInput = ''">Add</button>
-        </form>
+<body class="min-h-screen bg-[#24282b]">
+    <section class="flex flex-col min-h-screen justify-center items-center">
+        <div x-data="{todos: [], userInput: ''}" class="w-full">
+            <form x-on:submit.prevent class="flex justify-center">
+                <input x-model="userInput" placeholder="Enter todo item" type="text" class="border border-red-800 p-3 rounded-xl w-2/3">
+                <button x-on:click="if(userInput.trim().length) 
+                todos.push({name: userInput, completed: false}); userInput = ''" class="border rounded-xl ml-4 p-2 bg-[#eff1ef]">Add</button>
+            </form>
 
-        <template x-for="todo in todos">
+            <template x-for="todo in todos">
+                <div class="bg-[#eff1ef] rounded-3xl m-5 p-5">
+                    <input type="checkbox" x-model="todo.completed">
+                    <span x-text="todo.name" :class="{'completed': todo.completed}"></span>
+                    <button @click="todos = todos.filter((currTodo) =>  currTodo!= todo)" class="bg-red-600 rounded-full w-6 h-full text-end">&nbsp;</button>
+                </div>
+            </template>
+            <button @click="todos = []" x-show="todos.length">Clear all</button>
+
             <div>
-                <input type="checkbox" x-model="todo.completed">
-                <span x-text="todo.name" :class="{'completed': todo.completed}"></span>
-                <button @click="todos = todos.filter((currTodo) =>  currTodo!= todo)">x</button>
+                <span x-text="todos.filter((todo) => todo.completed).length"></span> /
+                <span x-text="todos.length"></span> todos completed
             </div>
-        </template>
-        <button @click="todos = []" x-show="todos.length">Clear all</button>
-
-        <div>
-            <span x-text="todos.filter((todo) => todo.completed).length"></span>/
-            <span x-text="todos.length"></span> todos completed
         </div>
-    </div>
+    </section>
 </body>
 </html>
