@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./public/style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>.completed{text-decoration: line-through;}</style>
+    <title>Todo App</title>
+</head>
+<body>
+    <div x-data="{todos: [], userInput: ''}">
+        <form x-on:submit.prevent>
+            <input x-model="userInput" placeholder="Enter todo item" type="text">
+            <button x-on:click="if(userInput.trim().length) 
+            todos.push({name: userInput, completed: false}); userInput = ''">Add</button>
+        </form>
+
+        <template x-for="todo in todos">
+            <div>
+                <input type="checkbox" x-model="todo.completed">
+                <span x-text="todo.name" :class="{'completed': todo.completed}"></span>
+                <button @click="todos = todos.filter((currTodo) =>  currTodo!= todo)">x</button>
+            </div>
+        </template>
+        <button @click="todos = []" x-show="todos.length">Clear all</button>
+
+        <div>
+            <span x-text="todos.filter((todo) => todo.completed).length"></span>/
+            <span x-text="todos.length"></span> todos completed
+        </div>
+    </div>
+</body>
+</html>
